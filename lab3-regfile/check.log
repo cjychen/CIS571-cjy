@@ -1,0 +1,215 @@
+
+ /----------------------------------------------------------------------------\
+ |                                                                            |
+ |  yosys -- Yosys Open SYnthesis Suite                                       |
+ |                                                                            |
+ |  Copyright (C) 2012 - 2020  Claire Wolf <claire@symbioticeda.com>          |
+ |                                                                            |
+ |  Permission to use, copy, modify, and/or distribute this software for any  |
+ |  purpose with or without fee is hereby granted, provided that the above    |
+ |  copyright notice and this permission notice appear in all copies.         |
+ |                                                                            |
+ |  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES  |
+ |  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF          |
+ |  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR   |
+ |  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES    |
+ |  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN     |
+ |  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF   |
+ |  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.            |
+ |                                                                            |
+ \----------------------------------------------------------------------------/
+
+ Yosys 0.9+3855 (git sha1 54294957, clang 7.0.1 -fPIC -Os)
+
+
+-- Parsing `lc4_regfile.v' using frontend `verilog' --
+
+1. Executing Verilog-2005 frontend: lc4_regfile.v
+Parsing Verilog input from `lc4_regfile.v' to AST representation.
+Generating RTLIL representation for module `\lc4_regfile'.
+Successfully finished Verilog frontend.
+
+-- Parsing `register.v' using frontend `verilog' --
+
+2. Executing Verilog-2005 frontend: register.v
+Parsing Verilog input from `register.v' to AST representation.
+Generating RTLIL representation for module `\Nbit_reg'.
+Successfully finished Verilog frontend.
+
+-- Running command `check; hierarchy -check; flatten; check -assert' --
+
+3. Executing CHECK pass (checking for obvious problems).
+Checking module Nbit_reg...
+Checking module lc4_regfile...
+Warning: Wire lc4_regfile.\r7v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r7v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r6v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r5v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r4v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r3v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r2v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r1v [0] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [15] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [14] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [13] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [12] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [11] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [10] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [9] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [8] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [7] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [6] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [5] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [4] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [3] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [2] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [1] is used but has no driver.
+Warning: Wire lc4_regfile.\r0v [0] is used but has no driver.
+Found and reported 128 problems.
+
+4. Executing HIERARCHY pass (managing design hierarchy).
+Parameter 1 (\n) = 16
+
+4.1. Executing AST frontend in derive mode using pre-parsed AST for module `\Nbit_reg'.
+Parameter 1 (\n) = 16
+Generating RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Parameter 1 (\n) = 16
+Found cached RTLIL representation for module `$paramod\Nbit_reg\n=16'.
+Mapping positional arguments of cell lc4_regfile.r7 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r6 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r5 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r4 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r3 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r2 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r1 ($paramod\Nbit_reg\n=16).
+Mapping positional arguments of cell lc4_regfile.r0 ($paramod\Nbit_reg\n=16).
+
+5. Executing FLATTEN pass (flatten design).
+<suppressed ~8 debug messages>
+
+6. Executing CHECK pass (checking for obvious problems).
+Checking module $paramod\Nbit_reg\n=16...
+Checking module Nbit_reg...
+Checking module lc4_regfile...
+Found and reported 0 problems.
+
+Warnings: 128 unique messages, 128 total
+End of script. Logfile hash: 8a159dfb23, CPU: user 0.03s system 0.01s, MEM: 10.50 MB peak
+Yosys 0.9+3855 (git sha1 54294957, clang 7.0.1 -fPIC -Os)
+Time spent: 63% 2x check (0 sec), 22% 2x read_verilog (0 sec), ...
