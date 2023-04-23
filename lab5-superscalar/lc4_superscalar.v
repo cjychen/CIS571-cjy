@@ -51,8 +51,8 @@ module lc4_processor(input wire         clk,             // main clock
    // pc wires attached to the PC register's ports
    wire [15:0] F_pc_out;   // Current program counter (read out from pc_reg)
    wire [15:0] F_pc_in = Switch ? pc_plus_one : 
-                         flush_B ? X_alu_result_A : 
-                         flush_A ? X_alu_result_B : pc_plus_two;    // Next program counter (you compute this and feed it into next_pc) 
+                         flush_B ? X_alu_result_B : 
+                         flush_A ? X_alu_result_A : pc_plus_two;    // Next program counter (you compute this and feed it into next_pc) 
    wire [15:0] pc_plus_one; 
    wire [15:0] pc_plus_two;
    wire pc_we;
@@ -187,7 +187,7 @@ module lc4_processor(input wire         clk,             // main clock
    // 3. Dependence from D.A to D.B (including the case where D.A is a load)
    wire AB_dep = (D_wsel_A == D_r1sel_B && D_regfile_we_A && D_r1re_B) || 
                  (D_wsel_A == D_r2sel_B && D_regfile_we_A && D_r2re_B && !D_is_store_B) ||
-                 (D_is_branch_B && D_nzp_we_A);
+                 (D_is_branch_B && D_nzp_we_A); // NZP write to branch
 
    // 4. Structural hazard (both D.A and D.B access memory)
    wire struc_haz = D_is_load_A && D_is_load_B || D_is_load_A && D_is_store_B || 
@@ -202,8 +202,8 @@ module lc4_processor(input wire         clk,             // main clock
    assign D_we_A = !LTU_A; // pipe A Decode stall
    assign D_we_B = !LTU_A; // pipe B Decode stall
 
-   assign X_ir_in_A = LTU_A ? 16'b0 : flush_A ? 16'd0 : D_ir_out_A; // flush not ok
-   assign X_ir_in_B = LTU_A ? 16'b0 : Switch ? 16'b0 : (flush_A || flush_B) ? 16'd0 : D_ir_out_B; // flush not ok
+   assign X_ir_in_A = LTU_A ? 16'b0 : (flush_A || flush_B) ? 16'd0 : D_ir_out_A;
+   assign X_ir_in_B = Switch ? 16'b0 : (flush_A || flush_B) ? 16'd0 : D_ir_out_B;
    
    // ============== Switch =================//
    // add switch logic to X input    for 5 reg
@@ -241,11 +241,11 @@ module lc4_processor(input wire         clk,             // main clock
 
    Nbit_reg #(16, 0) X_r1data_reg_A (.in(X_r1data_in_A), .out(X_r1data_out_A), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(16, 0) X_r2data_reg_A (.in(X_r2data_in_A), .out(X_r2data_out_A), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
-   Nbit_reg #(18, 0) X_ctrl_reg_A (.in(D_ctrl_out_A), .out(X_ctrl_out_A), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst||LTU_A||flush_A)); //stall & flush 
+   Nbit_reg #(18, 0) X_ctrl_reg_A (.in(D_ctrl_out_A), .out(X_ctrl_out_A), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst||LTU_A||flush_A||flush_B)); //stall & flush 
 
    Nbit_reg #(16, 0) X_r1data_reg_B (.in(X_r1data_in_B), .out(X_r1data_out_B), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(16, 0) X_r2data_reg_B (.in(X_r2data_in_B), .out(X_r2data_out_B), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
-   Nbit_reg #(18, 0) X_ctrl_reg_B (.in(D_ctrl_out_B), .out(X_ctrl_out_B), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst||Switch||flush_B)); // || flush
+   Nbit_reg #(18, 0) X_ctrl_reg_B (.in(D_ctrl_out_B), .out(X_ctrl_out_B), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst||Switch||flush_A||flush_B)); // || flush
 
    wire [15:0] X_r1_ALUin_A; // MUX bypass
    wire [15:0] X_r2_ALUin_A; // MUX bypass
@@ -314,6 +314,8 @@ module lc4_processor(input wire         clk,             // main clock
    wire [15:0] M_pc_out_B;
    wire [17:0] M_ctrl_out_B;
 
+   wire [15:0] M_ir_in_B = flush_A ? 16'b0 : X_ir_out_B;
+
    wire M_we = 1'b1;
 
    Nbit_reg #(16, 0) M_O_reg_A (.in(X_alu_result_A), .out(M_O_out_A), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
@@ -324,9 +326,9 @@ module lc4_processor(input wire         clk,             // main clock
 
    Nbit_reg #(16, 0) M_O_reg_B (.in(X_alu_result_B), .out(M_O_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(16, 0) M_r2data_reg_B (.in(X_r2_ALUin_B), .out(M_r2data_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
-   Nbit_reg #(16, 0) M_ir_reg_B (.in(X_ir_out_B), .out(M_ir_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
+   Nbit_reg #(16, 0) M_ir_reg_B (.in(M_ir_in_B), .out(M_ir_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(16, 0) M_pc_reg_B (.in(X_pc_out_B), .out(M_pc_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
-   Nbit_reg #(18, 0) M_ctrl_reg_B (.in(X_ctrl_out_B), .out(M_ctrl_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst||flush_B));
+   Nbit_reg #(18, 0) M_ctrl_reg_B (.in(X_ctrl_out_B), .out(M_ctrl_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst||flush_A));
 
 
    wire [2:0] M_r1sel_A = M_ctrl_out_A[2:0];    // rs
@@ -429,7 +431,7 @@ module lc4_processor(input wire         clk,             // main clock
 
    // =============== RD data ==================//
    assign W_rd_data_A = W_select_pc_plus_one_A ? M_pc_out_A : W_is_load_A ? W_D_out_A : W_O_out_A;
-   assign W_rd_data_B = W_select_pc_plus_one_B ? M_pc_out_B : W_is_load_B ? W_D_out_B : W_O_out_B;
+   assign W_rd_data_B = W_select_pc_plus_one_B ? M_pc_out_A : W_is_load_B ? W_D_out_B : W_O_out_B;
 
    //============== WX & MX  Bypass ============// 
 
@@ -466,24 +468,21 @@ module lc4_processor(input wire         clk,             // main clock
 
    Nbit_reg #(3, 3'b000) nzp_reg_A (.in(NZP_A), .out(last_NZP_A), .clk(clk), .we(X_nzp_we_A), .gwe(gwe), .rst(rst));
    Nbit_reg #(3, 3'b000) nzp_reg_B (.in(NZP_B), .out(last_NZP_B), .clk(clk), .we(X_nzp_we_B), .gwe(gwe), .rst(rst));
-   // wire if_NZP_A = (|(X_ir_out_A[11:9] & last_NZP_B) && M_nzp_we_B) || (|(X_ir_out_A[11:9] & last_NZP_A) && !M_nzp_we_B);
-   // wire if_NZP_B = |(X_ir_out_B[11:9] & NZP_A);
-   // wire flush_A = X_is_branch_B && |(X_ir_out_B[11:9] & NZP_A) || X_is_control_insn_A;
-   // wire flush_B = X_is_branch_A && |(X_ir_out_A[11:9] & last_NZP_B) || X_is_control_insn_B;
-   wire flush_A = X_is_branch_A && (|(X_ir_out_A[11:9] & last_NZP_B) && M_nzp_we_B|| |(X_ir_out_A[11:9] & last_NZP_A) && !M_nzp_we_B) || X_is_control_insn_A;
-   wire flush_B = X_is_branch_B && |(X_ir_out_A[11:9] & NZP_A) || X_is_control_insn_B || flush_A;
+
+   wire flush_A = X_is_branch_A && (|(X_ir_out_A[11:9] & last_NZP_B) && M_nzp_we_B || |(X_ir_out_A[11:9] & last_NZP_A) && !M_nzp_we_B) || X_is_control_insn_A;
+   wire flush_B = X_is_branch_B && |(X_ir_out_B[11:9] & last_NZP_B) || X_is_control_insn_B; // NZP_A valid?
 
    wire D_flush_out_A, X_flush_out_A, M_flush_out_A, W_flush_out_A;
    wire D_flush_out_B, X_flush_out_B, M_flush_out_B, W_flush_out_B;
 
-   Nbit_reg #(1, 1) D_flush_reg_A (.in(flush_A), .out(D_flush_out_A), .clk(clk), .we(D_we_A), .gwe(gwe), .rst(rst));
-   Nbit_reg #(1, 1) X_flush_reg_A (.in(D_flush_out_A || flush_A), .out(X_flush_out_A), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
+   Nbit_reg #(1, 1) D_flush_reg_A (.in(flush_A || flush_B), .out(D_flush_out_A), .clk(clk), .we(D_we_A), .gwe(gwe), .rst(rst));
+   Nbit_reg #(1, 1) X_flush_reg_A (.in(D_flush_out_A || flush_A || flush_B), .out(X_flush_out_A), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(1, 1) M_flush_reg_A (.in(X_flush_out_A), .out(M_flush_out_A), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(1, 1) W_flush_reg_A (.in(M_flush_out_A), .out(W_flush_out_A), .clk(clk), .we(W_we), .gwe(gwe), .rst(rst));
 
-   Nbit_reg #(1, 1) D_flush_reg_B (.in(flush_B), .out(D_flush_out_B), .clk(clk), .we(D_we_B), .gwe(gwe), .rst(rst));
-   Nbit_reg #(1, 1) X_flush_reg_B (.in(D_flush_out_B || flush_B), .out(X_flush_out_B), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
-   Nbit_reg #(1, 1) M_flush_reg_B (.in(X_flush_out_B || flush_B), .out(M_flush_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
+   Nbit_reg #(1, 1) D_flush_reg_B (.in(flush_B || flush_A), .out(D_flush_out_B), .clk(clk), .we(D_we_B), .gwe(gwe), .rst(rst));
+   Nbit_reg #(1, 1) X_flush_reg_B (.in(D_flush_out_B || flush_B || flush_A), .out(X_flush_out_B), .clk(clk), .we(X_we), .gwe(gwe), .rst(rst));
+   Nbit_reg #(1, 1) M_flush_reg_B (.in(X_flush_out_B || flush_A), .out(M_flush_out_B), .clk(clk), .we(M_we), .gwe(gwe), .rst(rst));
    Nbit_reg #(1, 1) W_flush_reg_B (.in(M_flush_out_B), .out(W_flush_out_B), .clk(clk), .we(W_we), .gwe(gwe), .rst(rst));
 
    // =================================== LD & RD =======================//
@@ -548,11 +547,11 @@ module lc4_processor(input wire         clk,             // main clock
     * to conditionally print out information.
     */
    always @(posedge gwe) begin
-      $write("PC_A: %h;   ", X_pc_out_A);
-      pinstr(X_ir_out_A);
+      $write("PC_A: %h;   ", D_pc_out_A);
+      pinstr(D_ir_out_A);
       $display();
-      $write("PC_B: %h;   ", X_pc_out_B);
-      pinstr(X_ir_out_B);
+      $write("PC_B: %h;   ", D_pc_out_B);
+      pinstr(D_ir_out_B);
       $display();
       // $display("%d %h %h %h %h %h", $time, f_pc, d_pc, e_pc, m_pc, test_cur_pc);
       // if (o_dmem_we)
